@@ -1,0 +1,1 @@
+CREATE KEYSPACE gravity WITH replication = {'class':'NetworkTopologyStrategy', 'HOME':1};

@@ -1,0 +1,24 @@
+#!/bin/node --harmony
+'use strict'
+
+var coroutine		= require('coroutine')
+  , errors			= require('errors')
+  , modelManager	= require('model-manager')
+  , tcc				= require('tcc')
+  , util			= require('util')
+
+var main = coroutine(function*(g) {
+
+	var cc = tcc.create({ poolSize: 5, hosts: [ '192.168.88.101' ], keyspace: 'gravity' })
+
+	global.models = yield modelManager.loadModels(__dirname + '/models', modelManager.drivers.Cassandra.create(cc), g.resume)
+
+	// console.log(util.inspect(models, {depth:null,showHidden:true}))
+})
+
+main(function(err, result) {
+	if(err) {
+		console.showError(err)
+		process.exit()
+	}
+})
